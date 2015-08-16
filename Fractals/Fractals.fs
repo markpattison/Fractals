@@ -19,7 +19,9 @@ type FractalsGame() as _this =
     do graphics.PreferredBackBufferWidth <- 800
     do graphics.PreferredBackBufferHeight <- 600
     do graphics.ApplyChanges()
-    do base.Content.RootDirectory <- "Content"
+    do base.Content.RootDirectory <- "Content/Assets"
+    let mutable font = Unchecked.defaultof<SpriteFont>
+
     let mutable (vertices: VertexPositionTexture[]) = [| |]
     let indices = [| 0; 2; 1; 1; 2; 3 |]
     let mutable effect = Unchecked.defaultof<Effect>
@@ -59,8 +61,11 @@ type FractalsGame() as _this =
                 new VertexPositionTexture(new Vector3(-1.0f,  1.0f, 0.0f), new Vector2(0.0f, 1.0f))
                 new VertexPositionTexture(new Vector3( 1.0f,  1.0f, 0.0f), new Vector2(1.0f, 1.0f))
             |]
-        effect <- EffectReader.GetEffect device @"effects.mgfxo"
+        //effect <- EffectReader.GetEffect device @"effects.mgfxo"
+        effect <- _this.Content.Load<Effect>("effects")
         widthOverHeight <- (single graphics.PreferredBackBufferWidth) / (single graphics.PreferredBackBufferHeight)
+
+        font <- _this.Content.Load<SpriteFont>("Arial")
 
         Mouse.SetPosition(_this.Window.ClientBounds.Width / 2, _this.Window.ClientBounds.Height / 2)
         originalMouseState <- Mouse.GetState()
