@@ -61,13 +61,13 @@ type FractalsGame() as _this =
                 new VertexPositionTexture(new Vector3(-1.0f,  1.0f, 0.0f), new Vector2(0.0f, 1.0f))
                 new VertexPositionTexture(new Vector3( 1.0f,  1.0f, 0.0f), new Vector2(1.0f, 1.0f))
             |]
-        //effect <- EffectReader.GetEffect device @"effects.mgfxo"
-        effect <- _this.Content.Load<Effect>("Effects/effects")
-        widthOverHeight <- (single graphics.PreferredBackBufferWidth) / (single graphics.PreferredBackBufferHeight)
 
+        effect <- _this.Content.Load<Effect>("Effects/effects")
         font <- _this.Content.Load<SpriteFont>("Fonts/Arial")
 
-        Mouse.SetPosition(_this.Window.ClientBounds.Width / 2, _this.Window.ClientBounds.Height / 2)
+        widthOverHeight <- (single graphics.PreferredBackBufferWidth) / (single graphics.PreferredBackBufferHeight)
+
+        //Mouse.SetPosition(_this.Window.ClientBounds.Width / 2, _this.Window.ClientBounds.Height / 2)
         originalMouseState <- Mouse.GetState()
         input <- Input(Keyboard.GetState(), Keyboard.GetState(), Mouse.GetState(), Mouse.GetState(), _this.Window, originalMouseState, 0, 0)
 
