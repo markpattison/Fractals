@@ -13,15 +13,15 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin Assets/Arial.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
-/build:Assets/Arial.spritefont
-
-#begin Assets/effects.fx
+#begin Effects/effects.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:Assets/effects.fx
+/build:Effects/effects.fx
+
+#begin Fonts/Arial.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Arial.spritefont
 
