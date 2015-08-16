@@ -41,9 +41,24 @@ float4 ApplyColourMap(float x)
 	return float4(sin(x * 4.0), sin(x * 5.0), sin(x * 6.0), 1.0);
 }
 
+float2 ComplexMultiply(float2 a, float2 b)
+{
+	return float2(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x);
+}
+
+float2 ComplexSquare(float2 z)
+{
+	return ComplexMultiply(z, z);
+}
+
+float2 ComplexCube(float2 z)
+{
+	return ComplexMultiply(z, ComplexSquare(z));
+}
+
 float2 Function(float2 z, float2 offset)
 {
-	return float2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + offset;
+	return ComplexSquare(z) + offset;
 }
 
 float CalculatePixelResult(float2 z, float2 offset)
