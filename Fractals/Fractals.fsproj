@@ -56,16 +56,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="EffectReader.fs" />
-    <Compile Include="Input.fs" />
-    <Compile Include="Fractals.fs" />
-    <Compile Include="Instructions.fs" />
     <Content Include="Content\Effects\effects.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Fonts\Arial.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Compile Include="Input.fs" />
+    <Compile Include="Fractals.fs" />
+    <Compile Include="Instructions.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
