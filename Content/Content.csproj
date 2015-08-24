@@ -55,7 +55,9 @@
     <MonoGameContentReference Include="Content.mgcb" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Fonts\Arial.spritefont" />
+    <None Include="Fonts\Miramo.spritefont">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Effects\effects.fx" />

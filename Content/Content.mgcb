@@ -19,9 +19,9 @@
 /processorParam:DebugMode=Auto
 /build:Effects/effects.fx
 
-#begin Fonts/Arial.spritefont
+#begin Fonts/Miramo.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:TextureFormat=Compressed
-/build:Fonts/Arial.spritefont
+/build:Fonts/Miramo.spritefont
 

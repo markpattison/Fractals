@@ -33,7 +33,7 @@ VertexToPixel VertexShader1(VertexShaderInput input)
 
 float2 CalculatePosition(float2 inputCoords, float zoom, float widthOverHeight, float2 offset)
 {
-	return (inputCoords - 0.5) * zoom * float2(widthOverHeight, 1.0) + offset;
+	return (inputCoords - 0.5) * float2(widthOverHeight, 1.0) / Zoom + offset;
 }
 
 float4 ApplyColourMap(float x)

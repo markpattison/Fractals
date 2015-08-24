@@ -7,6 +7,8 @@
 //
 // Switch to showing Julia set - J (Julia set seed will be set to current position in Mandelbrot)
 // Switch to showing Mandelbrot set - M (position will be set to current Julia set seed)
+//
+// Show current paramets - P
 
 module Program
 
