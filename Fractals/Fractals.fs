@@ -4,6 +4,8 @@ open Microsoft.Xna.Framework
 open Microsoft.Xna.Framework.Graphics
 
 open Input
+open System.IO
+open System
 
 type Fractal =
     | Mandelbrot
@@ -27,7 +29,7 @@ type FractalsGame() as _this =
     let indices = [| 0; 2; 1; 1; 2; 3 |]
     let mutable effect = Unchecked.defaultof<Effect>
     let mutable widthOverHeight = 0.0f
-    let mutable zoom = 1.0f / 3.0f
+    let mutable zoom = 0.314f
     let mutable offset = new Vector2(0.0f, 0.0f)
     let mutable juliaSeed = new Vector2(0.0f, 0.0f)
     let mutable fractal = Mandelbrot
@@ -73,6 +75,17 @@ type FractalsGame() as _this =
             spriteBatch.DrawString(spriteFont, sprintf "Zoom = %.6f" zoom, new Vector2(0.0f, 5.0f * textHeight), colour)
 
         spriteBatch.End()
+
+    member _this.TakeScreenShot(gameTime) =
+        use screenShot = new RenderTarget2D(device, device.PresentationParameters.BackBufferWidth, device.PresentationParameters.BackBufferHeight)
+        device.SetRenderTarget(screenShot)
+        _this.Draw gameTime
+        device.SetRenderTarget(null)
+        let getFileName i = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), sprintf "Fractal%05i.png" i)
+        let fileIndex = { 1 .. 99999 } |> Seq.find (fun i -> not (File.Exists(getFileName i)))
+        let fileName = getFileName fileIndex
+        use stream = new FileStream(fileName, FileMode.Create)
+        screenShot.SaveAsPng(stream, screenShot.Width, screenShot.Height)
 
     override _this.Initialize() =
         device <- base.GraphicsDevice
@@ -120,8 +133,10 @@ type FractalsGame() as _this =
             fractal <- Julia
             juliaSeed <- offset
 
-        do base.Update(gameTime)
+        if input.JustPressed(Keys.PrintScreen) then _this.TakeScreenShot gameTime
 
+        do base.Update(gameTime)
+    
     override _this.Draw(gameTime) =
         let time = (single gameTime.TotalGameTime.TotalMilliseconds) / 100.0f
 
@@ -130,7 +145,7 @@ type FractalsGame() as _this =
             | Julia -> "Julia"
             | Mandelbrot -> "Mandelbrot"
 
-        do device.Clear(Color.CornflowerBlue)
+        do device.Clear(Color.Red)
         effect.CurrentTechnique <- effect.Techniques.[effectName]
         effect.Parameters.["Zoom"].SetValue(zoom)
         effect.Parameters.["WidthOverHeight"].SetValue(widthOverHeight)
@@ -146,5 +161,7 @@ type FractalsGame() as _this =
         if showParameters then ShowParameters()
 
         do base.Draw(gameTime)
+
+
 
 

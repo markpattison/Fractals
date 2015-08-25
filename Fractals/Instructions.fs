@@ -9,6 +9,7 @@
 // Switch to showing Mandelbrot set - M (position will be set to current Julia set seed)
 //
 // Show current paramets - P
+// Save a picture to your "My Pictures" directory - PrtScn
 
 module Program
 
