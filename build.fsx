@@ -1,10 +1,13 @@
 ﻿// include Fake libs
 #r "packages/FAKE/tools/FakeLib.dll"
 
+// note the MonoGame tools directory must be in the path
+
 open System
 open Fake
 
 // Directories
+let intermediateContentDir = "./intermediateContent"
 let contentDir = "./Fractals"
 let buildDir  = "./build/"
 let deployDir = "./deploy/"
@@ -22,13 +25,15 @@ Target "Clean" (fun _ ->
     CleanDirs [buildDir; deployDir]
 )
 
+let quoted dir = "\"" + dir + "\""
+
 let mgcbArgs =
-    @"/outputDir:""./Fractals"" /intermediateDir:""./intermediateContent"" /platform:Windows"
+    @"/outputDir:" + quoted contentDir + @" /intermediateDir:" + quoted intermediateContentDir + @" /platform:Windows"
 
 Target "BuildContent" (fun _ ->
     let contentFileList = contentFiles |> Seq.map (fun cf -> @" /build:" + "\"" + cf + "\"") |> String.concat ""
     ExecProcess (fun info ->
-        info.FileName <- @"C:\Program Files (x86)\MSBuild\MonoGame\v3.0\Tools\MGCB.exe"
+        info.FileName <- @"MGCB.exe"
         info.WorkingDirectory <- "."
         info.Arguments <- mgcbArgs + contentFileList)
         (TimeSpan.FromMinutes 5.0)
