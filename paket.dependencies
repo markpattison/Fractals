@@ -1,3 +1,4 @@
 source https://www.nuget.org/api/v2/
 
+nuget FAKE
 nuget MonoGame.Framework.WindowsDX ~> 3.4
