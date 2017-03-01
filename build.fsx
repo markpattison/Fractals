@@ -1,10 +1,10 @@
 ﻿// include Fake libs
 #r "packages/FAKE/tools/FakeLib.dll"
-#r "packages/FAKE/tools/FakeMonoGame.dll"
+#load "MonoGameContent.fsx"
 
 open System
 open Fake
-open Fake.MonoGameContent
+open MonoGameContent
 
 // Directories
 let intermediateContentDir = "./intermediateContent"

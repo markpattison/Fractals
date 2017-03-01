@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fractals", "Fractals\Fractals.fsproj", "{F26B87AB-E8C9-422E-8288-06EA8881BC04}"
 EndProject
@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".FAKE", ".FAKE", "{183BDADA
 	ProjectSection(SolutionItems) = preProject
 		build.bat = build.bat
 		build.fsx = build.fsx
+		MonoGameContent.fsx = MonoGameContent.fsx
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Content", "Content", "{48B855E5-0A9B-4E41-BD27-C6F3F9DDE10C}"

@@ -18,6 +18,7 @@ type FractalsGame() as _this =
     let mutable originalMouseState = Unchecked.defaultof<MouseState>
 
     let graphics = new GraphicsDeviceManager(_this)
+    do graphics.GraphicsProfile <- GraphicsProfile.HiDef
     do graphics.PreferredBackBufferWidth <- 800
     do graphics.PreferredBackBufferHeight <- 600
     do graphics.ApplyChanges()
