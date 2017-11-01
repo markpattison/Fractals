@@ -7,8 +7,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fractals", "Fractals\Fracta
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{10A74FBC-AB35-4641-8F87-5FD40FAD493A}"
 	ProjectSection(SolutionItems) = preProject
-		.paket\paket.bootstrapper.exe = .paket\paket.bootstrapper.exe
 		paket.dependencies = paket.dependencies
+		.paket\paket.exe = .paket\paket.exe
 		paket.lock = paket.lock
 	EndProjectSection
 EndProject
@@ -29,6 +29,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fonts", "Fonts", "{C3BBC369-6E7E-4E2D-A852-B4895B3A6882}"
 	ProjectSection(SolutionItems) = preProject
 		content\Fonts\Miramo.spritefont = content\Fonts\Miramo.spritefont
+		Content\Fonts\Miramob.ttf = Content\Fonts\Miramob.ttf
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{AA3A620E-536A-4550-82CB-AA7C00AE1362}"
