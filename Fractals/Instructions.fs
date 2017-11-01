@@ -17,6 +17,6 @@ open Fractals
 
 [<EntryPoint>]
 let Main args =
-    let game = new FractalsGame()
+    use game = new FractalsGame()
     do game.Run()
     0
