@@ -9,8 +9,8 @@ open MonoGameContent
 // Directories
 let intermediateContentDir = "./intermediateContent"
 let contentDir = "./Fractals"
-let buildDir  = "./build/"
-let deployDir = "./deploy/"
+let buildDir  = "./build"
+let deployDir = "./deploy"
 
 // Filesets
 let appReferences = 
