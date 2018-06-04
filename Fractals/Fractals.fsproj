@@ -65,7 +65,7 @@
     </Content>
     <Compile Include="Input.fs" />
     <Compile Include="Fractals.fs" />
-    <Compile Include="Instructions.fs" />
+    <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
