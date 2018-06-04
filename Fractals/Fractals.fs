@@ -19,8 +19,15 @@ type FractalsGame() as _this =
 
     let graphics = new GraphicsDeviceManager(_this)
     do graphics.GraphicsProfile <- GraphicsProfile.HiDef
+
     do graphics.PreferredBackBufferWidth <- 800
     do graphics.PreferredBackBufferHeight <- 600
+    do graphics.IsFullScreen <- false
+
+    //do graphics.PreferredBackBufferWidth <- 2560
+    //do graphics.PreferredBackBufferHeight <- 1440
+    //do graphics.IsFullScreen <- true
+
     do graphics.ApplyChanges()
     do base.Content.RootDirectory <- "Content"
     let mutable spriteBatch = Unchecked.defaultof<SpriteBatch>
