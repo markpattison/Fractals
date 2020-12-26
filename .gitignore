@@ -219,3 +219,6 @@ paket-files/
 
 # MonoGame
 intermediateContent/
+
+# Ionide
+.ionide/
