@@ -1,23 +1,19 @@
-﻿namespace Fractals
+namespace Fractals
 
-open Microsoft.Xna.Framework
-open Microsoft.Xna.Framework.Graphics
-
-open Input
 open System.IO
 open System
+open Microsoft.Xna.Framework
+open Microsoft.Xna.Framework.Graphics
+open Microsoft.Xna.Framework.Input
 
-type Fractal =
-    | Mandelbrot
-    | Julia
+open Input
 
-type FractalsGame() as _this =
+type Fractal = Mandelbrot | Julia
+
+type Game1() as _this =
     inherit Game()
-    let mutable device = Unchecked.defaultof<GraphicsDevice>
-    let mutable input = Unchecked.defaultof<Input>
-    let mutable originalMouseState = Unchecked.defaultof<MouseState>
-
     let graphics = new GraphicsDeviceManager(_this)
+
     do graphics.GraphicsProfile <- GraphicsProfile.HiDef
 
     do graphics.PreferredBackBufferWidth <- 800
@@ -29,17 +25,20 @@ type FractalsGame() as _this =
     //do graphics.IsFullScreen <- true
 
     do graphics.ApplyChanges()
-    do base.Content.RootDirectory <- "Content"
+    do base.Content.RootDirectory <- "content"
     let mutable spriteBatch = Unchecked.defaultof<SpriteBatch>
     let mutable spriteFont = Unchecked.defaultof<SpriteFont>
+
+    let mutable input = Unchecked.defaultof<Input>
+    let mutable originalMouseState = Unchecked.defaultof<MouseState>
 
     let mutable (vertices: VertexPositionTexture[]) = [| |]
     let indices = [| 0; 2; 1; 1; 2; 3 |]
     let mutable effect = Unchecked.defaultof<Effect>
     let mutable widthOverHeight = 0.0f
     let mutable zoom = 0.314f
-    let mutable offset = new Vector2(0.0f, 0.0f)
-    let mutable juliaSeed = new Vector2(0.0f, 0.0f)
+    let mutable offset = Vector2(0.0f, 0.0f)
+    let mutable juliaSeed = Vector2(0.0f, 0.0f)
     let mutable fractal = Mandelbrot
     let mutable showParameters = false
 
@@ -55,40 +54,40 @@ type FractalsGame() as _this =
     let getInput (input: Input) =
         let scaled = if (input.IsPressed Keys.LeftShift || input.IsPressed Keys.RightShift) then 0.1f else 1.0f
 
-        let move = scaled * 0.005f * new Vector2(getLeftRight input, getDownUp input) / zoom
+        let move = scaled * 0.005f * Vector2(getLeftRight input, getDownUp input) / zoom
         let zoomIn = 1.02f ** (scaled * getPageDownPageUp input)
-        let changeSeed = scaled * 0.005f * new Vector2(getDA input, getWS input)
+        let changeSeed = scaled * 0.005f * Vector2(getDA input, getWS input)
 
         (-move, zoomIn, changeSeed)
-
+    
     let ShowParameters() =
         spriteBatch.Begin()
 
         let textHeight = spriteFont.MeasureString("Hello").Y
-        let colour = new Color(128, 128, 128, 128)
+        let colour = Color(128, 128, 128, 128)
 
         match fractal with
         | Mandelbrot ->
-            spriteBatch.DrawString(spriteFont, "Mandelbrot", new Vector2(0.0f, 0.0f), colour)
-            spriteBatch.DrawString(spriteFont, sprintf "X = %.6f" offset.X, new Vector2(0.0f, textHeight), colour)
-            spriteBatch.DrawString(spriteFont, sprintf "Y = %.6f" offset.Y, new Vector2(0.0f, 2.0f * textHeight), colour)
-            spriteBatch.DrawString(spriteFont, sprintf "Zoom = %.6f" zoom, new Vector2(0.0f, 3.0f * textHeight), colour)
+            spriteBatch.DrawString(spriteFont, "Mandelbrot", Vector2(0.0f, 0.0f), colour)
+            spriteBatch.DrawString(spriteFont, sprintf "X = %.6f" offset.X, Vector2(0.0f, textHeight), colour)
+            spriteBatch.DrawString(spriteFont, sprintf "Y = %.6f" offset.Y, Vector2(0.0f, 2.0f * textHeight), colour)
+            spriteBatch.DrawString(spriteFont, sprintf "Zoom = %.6f" zoom, Vector2(0.0f, 3.0f * textHeight), colour)
 
         | Julia ->
-            spriteBatch.DrawString(spriteFont, "Julia", new Vector2(0.0f, 0.0f), colour)
-            spriteBatch.DrawString(spriteFont, sprintf "Seed X = %.6f" juliaSeed.X, new Vector2(0.0f, textHeight), colour)
-            spriteBatch.DrawString(spriteFont, sprintf "Seed Y = %.6f" juliaSeed.Y, new Vector2(0.0f, 2.0f * textHeight), colour)
-            spriteBatch.DrawString(spriteFont, sprintf "X = %.6f" offset.X, new Vector2(0.0f, 3.0f * textHeight), colour)
-            spriteBatch.DrawString(spriteFont, sprintf "Y = %.6f" offset.Y, new Vector2(0.0f, 4.0f * textHeight), colour)
-            spriteBatch.DrawString(spriteFont, sprintf "Zoom = %.6f" zoom, new Vector2(0.0f, 5.0f * textHeight), colour)
+            spriteBatch.DrawString(spriteFont, "Julia", Vector2(0.0f, 0.0f), colour)
+            spriteBatch.DrawString(spriteFont, sprintf "Seed X = %.6f" juliaSeed.X, Vector2(0.0f, textHeight), colour)
+            spriteBatch.DrawString(spriteFont, sprintf "Seed Y = %.6f" juliaSeed.Y, Vector2(0.0f, 2.0f * textHeight), colour)
+            spriteBatch.DrawString(spriteFont, sprintf "X = %.6f" offset.X, Vector2(0.0f, 3.0f * textHeight), colour)
+            spriteBatch.DrawString(spriteFont, sprintf "Y = %.6f" offset.Y, Vector2(0.0f, 4.0f * textHeight), colour)
+            spriteBatch.DrawString(spriteFont, sprintf "Zoom = %.6f" zoom, Vector2(0.0f, 5.0f * textHeight), colour)
 
         spriteBatch.End()
 
     member _this.TakeScreenShot(gameTime) =
-        use screenShot = new RenderTarget2D(device, device.PresentationParameters.BackBufferWidth, device.PresentationParameters.BackBufferHeight)
-        device.SetRenderTarget(screenShot)
+        use screenShot = new RenderTarget2D(_this.GraphicsDevice, _this.GraphicsDevice.PresentationParameters.BackBufferWidth, _this.GraphicsDevice.PresentationParameters.BackBufferHeight)
+        _this.GraphicsDevice.SetRenderTarget(screenShot)
         _this.Draw gameTime
-        device.SetRenderTarget(null)
+        _this.GraphicsDevice.SetRenderTarget(null)
         let getFileName i = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), sprintf "Fractal%05i.png" i)
         let fileIndex = { 1 .. 99999 } |> Seq.find (fun i -> not (File.Exists(getFileName i)))
         let fileName = getFileName fileIndex
@@ -96,28 +95,29 @@ type FractalsGame() as _this =
         screenShot.SaveAsPng(stream, screenShot.Width, screenShot.Height)
 
     override _this.Initialize() =
-        device <- base.GraphicsDevice
-        base.Initialize()
+        base.Initialize()  
 
     override _this.LoadContent() =
         vertices <-
             [|
-                new VertexPositionTexture(new Vector3(-1.0f, -1.0f, 0.0f), new Vector2(0.0f, 0.0f))
-                new VertexPositionTexture(new Vector3( 1.0f, -1.0f, 0.0f), new Vector2(1.0f, 0.0f))
-                new VertexPositionTexture(new Vector3(-1.0f,  1.0f, 0.0f), new Vector2(0.0f, 1.0f))
-                new VertexPositionTexture(new Vector3( 1.0f,  1.0f, 0.0f), new Vector2(1.0f, 1.0f))
+                VertexPositionTexture(Vector3(-1.0f, -1.0f, 0.0f), Vector2(0.0f, 0.0f))
+                VertexPositionTexture(Vector3( 1.0f, -1.0f, 0.0f), Vector2(1.0f, 0.0f))
+                VertexPositionTexture(Vector3(-1.0f,  1.0f, 0.0f), Vector2(0.0f, 1.0f))
+                VertexPositionTexture(Vector3( 1.0f,  1.0f, 0.0f), Vector2(1.0f, 1.0f))
             |]
 
-        effect <- _this.Content.Load<Effect>("Effects/effects")
+        effect <- _this.Content.Load<Effect>("effects/effects")
         spriteFont <- _this.Content.Load<SpriteFont>("Fonts/Miramo")
 
-        spriteBatch <- new SpriteBatch(device)
+        spriteBatch <- new SpriteBatch(_this.GraphicsDevice)
 
         widthOverHeight <- (single graphics.PreferredBackBufferWidth) / (single graphics.PreferredBackBufferHeight)
 
         //Mouse.SetPosition(_this.Window.ClientBounds.Width / 2, _this.Window.ClientBounds.Height / 2)
         originalMouseState <- Mouse.GetState()
         input <- Input(Keyboard.GetState(), Keyboard.GetState(), Mouse.GetState(), Mouse.GetState(), _this.Window, originalMouseState, 0, 0)
+
+
 
     override _this.Update(gameTime) =
         let time = float32 gameTime.TotalGameTime.TotalSeconds
@@ -141,10 +141,10 @@ type FractalsGame() as _this =
             fractal <- Julia
             juliaSeed <- offset
 
-        if input.JustPressed(Keys.PrintScreen) then _this.TakeScreenShot gameTime
+        if input.JustPressed(Keys.Q) then _this.TakeScreenShot gameTime
 
-        do base.Update(gameTime)
-    
+        base.Update(gameTime)
+
     override _this.Draw(gameTime) =
         let time = (single gameTime.TotalGameTime.TotalMilliseconds) / 100.0f
 
@@ -153,7 +153,7 @@ type FractalsGame() as _this =
             | Julia -> "Julia"
             | Mandelbrot -> "Mandelbrot"
 
-        do device.Clear(Color.Red)
+        _this.GraphicsDevice.Clear(Color.Red)
         effect.CurrentTechnique <- effect.Techniques.[effectName]
         effect.Parameters.["Zoom"].SetValue(zoom)
         effect.Parameters.["WidthOverHeight"].SetValue(widthOverHeight)
@@ -163,13 +163,9 @@ type FractalsGame() as _this =
         effect.CurrentTechnique.Passes |> Seq.iter
             (fun pass ->
                 pass.Apply()
-                device.DrawUserIndexedPrimitives(PrimitiveType.TriangleList, vertices, 0, vertices.Length, indices, 0, indices.Length / 3)
+                _this.GraphicsDevice.DrawUserIndexedPrimitives(PrimitiveType.TriangleList, vertices, 0, vertices.Length, indices, 0, indices.Length / 3)
             )
 
         if showParameters then ShowParameters()
 
-        do base.Draw(gameTime)
-
-
-
-
+        base.Draw(gameTime)

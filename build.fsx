@@ -1,48 +1,38 @@
-﻿// include Fake libs
-#r "packages/FAKE/tools/FakeLib.dll"
-#load "MonoGameContent.fsx"
+#r "paket: groupref build //"
+#load "./.fake/build.fsx/intellisense.fsx"
 
 open System
-open Fake
-open MonoGameContent
 
-// Directories
-let intermediateContentDir = "./intermediateContent"
-let contentDir = "./Fractals"
-let buildDir  = "./build"
-let deployDir = "./deploy"
+open Fake.Core
+open Fake.DotNet
+open Fake.IO.Globbing.Operators
 
-// Filesets
-let appReferences = 
-    !! "**/*.fsproj"
+let contentFiles = !! "./content/**/*.fx" ++ "./content/**/*.spritefont"
+let projectFile = "./src/Fractals.fsproj"
 
-let contentFiles =
-    !! "**/*.fx"
-        ++ "**/*.spritefont"
+Target.create "BuildContent" (fun _ ->
+    let toBuild =
+        contentFiles
+        |> Seq.map (fun filepath -> sprintf "/b:%s" filepath)
 
-// Targets
-Target "Clean" (fun _ -> 
-    CleanDirs [buildDir; deployDir]
+    let args = "/platform:Windows /o:src /n:intermediateContent " + String.Join(" ", toBuild)
+    let result = DotNet.exec id "mgcb" args
+    if result.ExitCode <> 0 then failwithf "'dotnet mgcb %s' failed" args
 )
 
-Target "BuildContent" (fun _ ->
-    contentFiles
-        |> MonoGameContent (fun p ->
-            { p with
-                OutputDir = contentDir;
-                IntermediateDir = intermediateContentDir;
-            }))
-
-Target "BuildApp" (fun _ ->
-    appReferences
-        |> MSBuildRelease buildDir "Build"
-        |> Log "AppBuild-Output: "
+Target.create "Build" (fun _ ->
+    DotNet.build id projectFile
 )
 
-// Build order
-"Clean"
-    ==> "BuildContent"
-    ==> "BuildApp"
+Target.create "Run" (fun _ ->
+    CreateProcess.fromRawCommand "src/bin/Release/netcoreapp3.1/Fractals.exe" []
+    |> Proc.startRawSync
+    |> ignore
+    Process.setKillCreatedProcesses false
+)
 
-// start build
-RunTargetOrDefault "BuildApp"
+open Fake.Core.TargetOperators
+
+"BuildContent" ==> "Build" ==> "Run"
+
+Target.runOrDefaultWithArguments "Build"
