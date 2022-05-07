@@ -1,4 +1,6 @@
+#if FAKE
 #r "paket: groupref build //"
+#endif
 #load "./.fake/build.fsx/intellisense.fsx"
 
 open System
