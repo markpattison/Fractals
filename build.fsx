@@ -1,5 +1,9 @@
 #if FAKE
-#r "paket: groupref build //"
+#r "paket:
+nuget FSharp.Core
+nuget Fake.Core.Target
+nuget Fake.DotNet.Cli
+nuget Fake.IO.FileSystem //"
 #endif
 #load "./.fake/build.fsx/intellisense.fsx"
 
