@@ -22,4 +22,8 @@ Save a picture to your "My Pictures" directory - Q
 
 ## Building and running
 
-First run `dotnet tool restore` as a one-off.  Then to run the app locally use `dotnet fake build -t run`.
+To run the app locally use `dotnet run` within the `src` folder.
+
+## MonoGame content
+
+Install the MGCB Editor with `dotnet tool install -g dotnet-mgcb-editor` to edit the `src\content.mgcb` file if you add more content.
